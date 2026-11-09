@@ -1,0 +1,674 @@
+<meta name="claude:viewport-fit-sides" content="cover">
+<title>Family Gift Registry</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=Figtree:wght@400..700&display=swap">
+<style>
+/* Quiet ledger: cool stone neutrals, one deep-teal accent, lists stacked by person under each occasion. */
+:root {
+  --display: 'Bricolage Grotesque', system-ui, -apple-system, sans-serif;
+  --body: 'Figtree', system-ui, -apple-system, sans-serif;
+  --bg: #F4F6F5; --surface: #FFFFFF; --fg: #13201D; --muted: #5E6D69;
+  --line: #DCE3E0; --chip: #E9EEEC; --accent: #0E6B63; --accent-fg: #FFFFFF;
+  --accent-soft: #DDEFEB; --danger: #B42318; --scrim: rgba(12, 20, 18, .4);
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0D1513; --surface: #141E1C; --fg: #E7EEEB; --muted: #94A39F;
+    --line: #27352F; --chip: #1B2825; --accent: #5CCBB9; --accent-fg: #0B1512;
+    --accent-soft: #183A34; --danger: #FF8A7A; --scrim: rgba(0, 0, 0, .6);
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0D1513; --surface: #141E1C; --fg: #E7EEEB; --muted: #94A39F;
+  --line: #27352F; --chip: #1B2825; --accent: #5CCBB9; --accent-fg: #0B1512;
+  --accent-soft: #183A34; --danger: #FF8A7A; --scrim: rgba(0, 0, 0, .6);
+  color-scheme: dark;
+}
+
+:root { font-size: clamp(15px, 11.5px + .6vw, 20px); }
+*, *::before, *::after { box-sizing: border-box; }
+body {
+  margin: 0; min-height: 100%; background: var(--bg); color: var(--fg);
+  font: 1rem/1.5 var(--body);
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-top: 0; padding-bottom: 48px;
+}
+body::before {
+  content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px);
+  z-index: 10; background: var(--bg);
+}
+h1, h2, h3 { text-wrap: balance; }
+h1, h2, h3, p { margin: 0; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+[hidden] { display: none !important; }
+
+.eyebrow { font: 600 12px/1 var(--body); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+.muted { color: var(--muted); font-size: .9rem; }
+.hint { font-size: .82rem; color: var(--muted); }
+.row { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+.row.end { justify-content: flex-end; }
+.grow { flex: 1; min-width: 0; }
+
+/* Header */
+.top {
+  position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5;
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  padding-block: 14px;
+  background: color-mix(in oklab, var(--bg) 90%, transparent);
+  backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+}
+.brand { font: 700 1.25rem/1 var(--display); letter-spacing: -.01em; }
+.top-actions { display: flex; align-items: center; gap: 10px; }
+
+.note {
+  background: var(--accent-soft); color: var(--fg); font-size: 14px;
+  padding: 10px 14px; border-radius: 12px; margin-bottom: 12px;
+}
+
+/* Buttons and fields */
+.btn {
+  font: 600 .9rem/1 var(--body); background: var(--accent); color: var(--accent-fg);
+  border: 0; border-radius: 999px; padding: .85em 1.3em; cursor: pointer; text-decoration: none;
+  display: inline-flex; align-items: center; justify-content: center;
+}
+.btn.ghost { background: transparent; color: var(--fg); box-shadow: inset 0 0 0 1px var(--line); }
+.btn.sm { padding: .6rem 1rem; font-size: .82rem; }
+.btn.danger { background: var(--danger); color: var(--bg); }
+.link { background: none; border: 0; padding: 6px 0; color: var(--accent); font: 600 13px var(--body); cursor: pointer; }
+.link.danger { color: var(--danger); }
+.pill { font: 600 12px/1 var(--body); padding: 7px 10px; border-radius: 999px; background: var(--chip); color: var(--muted); }
+.pill.on { background: var(--accent-soft); color: var(--accent); }
+
+.field { display: grid; gap: 6px; font-size: .9rem; color: var(--muted); border: 0; padding: 0; margin: 0; min-width: 0; }
+.field legend { padding: 0; font-size: 14px; color: var(--muted); margin-bottom: 6px; }
+.field em { font-style: normal; opacity: .7; }
+.field input, .field select {
+  font: 1rem var(--body); color: var(--fg); background: var(--bg);
+  border: 1px solid var(--line); border-radius: .75rem; padding: .8rem .95rem;
+  width: 100%; min-width: 0;
+}
+.swatches { display: flex; gap: 10px; flex-wrap: wrap; }
+.sw { position: relative; display: inline-block; }
+.sw input { position: absolute; opacity: 0; width: 1px; height: 1px; pointer-events: none; }
+.sw span {
+  display: block; width: 34px; height: 34px; border-radius: 50%; background: var(--c);
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, .15); cursor: pointer;
+}
+.sw input:checked + span { outline: 2px solid var(--fg); outline-offset: 3px; }
+.sw input:focus-visible + span { outline: 2px solid var(--accent); outline-offset: 3px; }
+
+/* Avatars */
+.av {
+  width: 2.4rem; height: 2.4rem; border-radius: 50%; flex: none; overflow: hidden;
+  background: var(--c); color: #fff; display: grid; place-items: center;
+  font: 700 15px/1 var(--display); border: 0; padding: 0;
+}
+.av img { width: 100%; height: 100%; object-fit: cover; }
+.av.lg { width: 3.4rem; height: 3.4rem; font-size: 1.3rem; }
+button.av { cursor: pointer; }
+
+/* Shell: occasions and family on top for phones, a sidebar from 900px */
+.shell { display: grid; gap: 24px; align-items: start; }
+#rail { display: grid; gap: 18px; }
+.rail-block { display: grid; gap: 10px; }
+.occs { display: flex; gap: 8px; overflow-x: auto; padding-block: 4px; scrollbar-width: none; }
+.occs::-webkit-scrollbar { display: none; }
+.occ {
+  flex: none; font: 600 14px/1 var(--body); padding: 11px 16px; border-radius: 999px;
+  border: 1px solid var(--line); background: var(--surface); color: var(--fg);
+  cursor: pointer; white-space: nowrap;
+}
+.occ[aria-pressed="true"] { background: var(--fg); color: var(--bg); border-color: var(--fg); }
+.occ.add { border-style: dashed; color: var(--accent); }
+.people-row { display: flex; gap: 14px; overflow-x: auto; padding-block: 4px; scrollbar-width: none; }
+.person {
+  flex: none; display: grid; justify-items: center; gap: 6px; background: none; border: 0;
+  color: var(--muted); font: 500 12px/1 var(--body); cursor: pointer; padding: 0;
+}
+.person .av { width: 3rem; height: 3rem; }
+
+/* Occasion and lists */
+.occ-head { display: grid; gap: 6px; padding-block: 8px 4px; }
+.occ-head h1 { font: 700 clamp(1.9rem, 1rem + 2.4vw, 3.2rem)/1.05 var(--display); letter-spacing: -.02em; }
+.list { padding-block: 28px; border-top: 1px solid var(--line); }
+.list-head { display: flex; align-items: center; gap: 14px; margin-bottom: 16px; }
+.list-head h2 { font: 600 1.5rem/1.1 var(--display); }
+.you {
+  font: 600 11px/1 var(--body); letter-spacing: .06em; text-transform: uppercase;
+  color: var(--accent); background: var(--accent-soft); padding: 5px 8px; border-radius: 999px;
+  vertical-align: middle; margin-left: 6px;
+}
+.empty-line { color: var(--muted); font-size: 14px; }
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(10rem, 1fr)); gap: .9rem; }
+.item {
+  background: var(--surface); border: 1px solid var(--line); border-radius: 16px;
+  overflow: hidden; display: grid; grid-template-rows: auto 1fr; min-width: 0;
+}
+.media { aspect-ratio: 4 / 3; background: var(--chip); display: grid; place-items: center; max-width: 100%; }
+.media img { width: 100%; height: 100%; object-fit: cover; }
+.noimg { font: 700 40px/1 var(--display); color: var(--accent); }
+.body { padding: 14px 14px 16px; display: grid; gap: 6px; align-content: start; min-width: 0; }
+.body h3 { font: 600 1.1rem/1.25 var(--display); overflow-wrap: anywhere; }
+.ext { font-size: 13px; color: var(--accent); text-decoration: none; overflow-wrap: anywhere; }
+.ext:hover { text-decoration: underline; }
+.price { font: 600 1rem/1.2 var(--display); font-variant-numeric: tabular-nums; color: var(--fg); }
+.actions { display: flex; flex-wrap: wrap; gap: 6px 12px; align-items: center; margin-top: 8px; }
+
+/* Join, empty, toast */
+.join, .empty { display: grid; gap: 1rem; justify-items: start; padding-block: clamp(1.5rem, 6vw, 4rem); width: 100%; max-width: 34rem; }
+.shell.solo .join { margin-inline: auto; }
+.join h1, .empty h2 { font: 700 clamp(2rem, 1rem + 2.6vw, 3.4rem)/1.1 var(--display); text-wrap: balance; }
+.stack { display: grid; gap: 18px; width: 100%; }
+.toast {
+  position: fixed; left: 50%; bottom: calc(env(safe-area-inset-bottom, 0px) + 20px);
+  transform: translate(-50%, 16px); opacity: 0; pointer-events: none; z-index: 50;
+  background: var(--fg); color: var(--bg); padding: 12px 18px; border-radius: 999px;
+  font: 600 14px/1.2 var(--body); max-width: calc(100% - 32px); text-align: center;
+  transition: opacity .2s, transform .2s;
+}
+.toast.on { opacity: 1; transform: translate(-50%, 0); }
+
+/* Sheets: bottom sheets on phones, centred cards on desktop */
+dialog {
+  border: 0; padding: 0; margin: auto auto 0; width: min(30rem, 100%); max-height: 90vh;
+  background: var(--surface); color: var(--fg); border-radius: 22px 22px 0 0;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, .25);
+}
+dialog::backdrop { background: var(--scrim); }
+dialog[open] { animation: rise .22s ease-out; }
+@keyframes rise { from { opacity: 0; transform: translateY(12px); } }
+.sheet { padding: 24px; display: grid; gap: 16px; }
+.sheet h2 { font: 700 1.5rem/1.1 var(--display); }
+.linkbox {
+  display: flex; gap: 10px; align-items: center; background: var(--bg);
+  border: 1px solid var(--line); border-radius: 12px; padding: 10px 12px;
+}
+.linkbox code { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 13px; }
+.cf-msg { font-size: 16px; text-wrap: balance; }
+
+/* Phones and up */
+@media (min-width: 900px) {
+  dialog { margin: auto; border-radius: 22px; }
+  .shell { grid-template-columns: 15rem minmax(0, 1fr); gap: 3rem; max-width: 76rem; margin-inline: auto; }
+  .shell.solo { grid-template-columns: minmax(0, 1fr); }
+  #rail { position: sticky; top: 96px; }
+  .occs { flex-direction: column; overflow: visible; }
+  .occ { text-align: left; }
+  .people-row { flex-wrap: wrap; overflow: visible; }
+  .grid { grid-template-columns: repeat(auto-fill, minmax(13rem, 1fr)); }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition: none !important; animation: none !important; }
+}
+</style>
+
+<header class="top">
+  <div class="brand">Family Gift Registry</div>
+  <div class="top-actions" id="hd"></div>
+</header>
+<div id="note" class="note" hidden></div>
+
+<div class="shell">
+  <aside id="rail" hidden></aside>
+  <section id="main"><p class="muted">Loading…</p></section>
+</div>
+
+<dialog id="occDlg">
+  <form class="sheet" data-form="occ">
+    <h2>New occasion</h2>
+    <label class="field"><span>Title</span><input name="title" required maxlength="60" placeholder="Holidays 2026"></label>
+    <label class="field"><span>Date <em>optional</em></span><input name="date" maxlength="40" placeholder="Dec 25"></label>
+    <div class="row end">
+      <button type="button" class="btn ghost" data-close>Cancel</button>
+      <button class="btn">Create</button>
+    </div>
+  </form>
+</dialog>
+
+<dialog id="itemDlg">
+  <form class="sheet" data-form="item">
+    <h2 id="itemTitle">Add item</h2>
+    <input type="hidden" name="uid">
+    <input type="hidden" name="itemId">
+    <label class="field"><span>Occasion</span><select name="occasion" id="occSel"></select></label>
+    <label class="field"><span>Item name</span><input name="gift" required maxlength="80" placeholder="Cast iron skillet"></label>
+    <label class="field"><span>Link <em>optional</em></span><input name="link" maxlength="500" placeholder="https://"></label>
+    <label class="field"><span>Price <em>optional</em></span><input name="price" inputmode="decimal" maxlength="12" placeholder="$45"></label>
+    <label class="field"><span>Photo <em>optional</em></span><input name="photo" type="file" accept="image/*"></label>
+    <p class="hint" id="photoHint"></p>
+    <div class="row end">
+      <button type="button" class="btn ghost" data-close>Cancel</button>
+      <button class="btn">Save</button>
+    </div>
+  </form>
+</dialog>
+
+<dialog id="meDlg"><div id="meBody"></div></dialog>
+
+<dialog id="invDlg">
+  <div class="sheet">
+    <h2>Invite family</h2>
+    <p class="muted">Send this link with Contributor access. Each person adds their name and their own lists.</p>
+    <div class="linkbox"><code id="invLink"></code><button class="btn ghost sm" data-act="copy" type="button">Copy</button></div>
+    <div class="row">
+      <a class="btn ghost sm" id="invSms" href="#">Text</a>
+      <a class="btn ghost sm" id="invMail" href="#">Email</a>
+    </div>
+    <div class="row end"><button type="button" class="btn" data-close>Done</button></div>
+  </div>
+</dialog>
+
+<dialog id="cfDlg">
+  <div class="sheet">
+    <p class="cf-msg" id="cfMsg"></p>
+    <div class="row end">
+      <button type="button" class="btn ghost" id="cfCancel">Cancel</button>
+      <button type="button" class="btn danger" id="cfOk">Delete</button>
+    </div>
+  </div>
+</dialog>
+
+<div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+<script>
+const COLORS = ['#0E6B63', '#4755B8', '#8A3B7D', '#B4562F', '#5F7A22', '#4C5B6B'];
+const S = { me: null, owner: false, joined: false, joinShown: false, loaded: false,
+            occ: {}, mem: {}, items: {}, claims: {}, sel: null };
+const itemSubs = {};
+let db = null, user = null;
+
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const money = n => new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: Number.isInteger(n) ? 0 : 2 }).format(n);
+const byTime = (a, b, k) => (a[1][k] || 0) - (b[1][k] || 0);
+const obj = snap => Object.fromEntries(snap.docs.filter(d => d.exists).map(d => [d.id, d.data()]));
+const sortedOcc = () => Object.entries(S.occ).sort((a, b) => byTime(a, b, 'createdAt'));
+function sortedMembers() {
+  const arr = Object.entries(S.mem).sort((a, b) => byTime(a, b, 'joinedAt'));
+  const i = arr.findIndex(([u]) => u === S.me);
+  if (i > 0) arr.unshift(arr.splice(i, 1)[0]);
+  return arr;
+}
+const avatar = uid => {
+  const m = S.mem[uid] || {};
+  return m.photo ? `<img src="${esc(m.photo)}" alt="">` : esc((m.name || '?').trim().charAt(0).toUpperCase());
+};
+
+function toast(msg) {
+  const t = $('#toast'); t.textContent = msg; t.classList.add('on');
+  clearTimeout(toast.t); toast.t = setTimeout(() => t.classList.remove('on'), 2800);
+}
+function note(msg) { const n = $('#note'); n.textContent = msg || ''; n.hidden = !msg; }
+function errMsg(e) {
+  return ({
+    quota_exceeded: 'The registry is full. Delete something first.',
+    invalid_argument: "That isn't allowed for your access level.",
+    resource_exhausted: 'Too many changes at once. Wait a moment.',
+    revoked: 'Your access changed. Reload to continue.',
+  })[e?.code] || "Couldn't save. Try again.";
+}
+function listen(q, fn) {
+  return q.onSnapshot(fn, e => note(errMsg(e)));
+}
+function gate(msg) { return `<div class="empty"><h2>${esc(msg)}</h2></div>`; }
+
+/* ---------- Data ---------- */
+async function init() {
+  const use = n => window.claude?.use?.(n) ?? Promise.resolve(null);
+  [db, user] = await Promise.all([use('db'), use('user')]);
+  if (!db) { $('#main').innerHTML = gate('Open this registry in claude.ai to see and change lists.'); return; }
+  S.me = user ? await user.id() : null;
+  S.owner = user ? await user.isOwner() : false;
+  if (!S.me) { $('#main').innerHTML = gate('Sign in to join the registry.'); return; }
+
+  setTimeout(() => { if (!S.loaded) note("Can't reach the registry yet. Lists will appear when it answers."); }, 10000);
+
+  listen(db.collection('occasions').orderBy('createdAt'), s => {
+    S.occ = obj(s);
+    if (!S.sel || !S.occ[S.sel]) S.sel = sortedOcc()[0]?.[0] || null;
+    render();
+  });
+  listen(db.collection('claims'), s => { S.claims = obj(s); render(); });
+  listen(db.collection('members').orderBy('joinedAt'), s => {
+    S.loaded = true; note('');
+    S.mem = obj(s);
+    S.joined = !!S.mem[S.me];
+    for (const uid of Object.keys(S.mem)) {
+      if (!itemSubs[uid]) itemSubs[uid] = listen(db.collection(`lists/${uid}/items`), t => { S.items[uid] = obj(t); render(); });
+    }
+    render();
+  });
+}
+
+async function shrink(file, max, limit) {
+  const url = URL.createObjectURL(file);
+  try {
+    const img = await new Promise((ok, no) => { const i = new Image(); i.onload = () => ok(i); i.onerror = no; i.src = url; });
+    const s = Math.min(1, max / Math.max(img.naturalWidth, img.naturalHeight));
+    const c = document.createElement('canvas');
+    c.width = Math.round(img.naturalWidth * s); c.height = Math.round(img.naturalHeight * s);
+    c.getContext('2d').drawImage(img, 0, 0, c.width, c.height);
+    let q = .8, out = c.toDataURL('image/jpeg', q);
+    while (out.length > limit && q > .4) { q -= .1; out = c.toDataURL('image/jpeg', q); }
+    if (out.length > limit) throw new Error('too large');
+    return out;
+  } finally { URL.revokeObjectURL(url); }
+}
+
+async function saveProfile(form) {
+  const fd = new FormData(form);
+  const name = String(fd.get('name') || '').trim();
+  if (!name) { toast('Add your name.'); return false; }
+  const prev = S.mem[S.me] || {};
+  const file = fd.get('photo');
+  let photo = prev.photo || null;
+  if (file && file.size) {
+    try { photo = await shrink(file, 240, 60000); } catch { toast("Couldn't use that photo. Try a smaller one."); return false; }
+  }
+  try {
+    await db.doc('members/' + S.me).set({
+      name, color: String(fd.get('color') || COLORS[0]), photo, joinedAt: prev.joinedAt || Date.now(),
+    });
+    return true;
+  } catch (e) {
+    toast(e?.code === 'invalid_argument' ? 'View-only access. Ask the owner for Contributor access.' : errMsg(e));
+    return false;
+  }
+}
+
+async function saveItem(form) {
+  const fd = new FormData(form);
+  const uid = fd.get('uid'), id = fd.get('itemId') || '';
+  const gift = String(fd.get('gift') || '').trim();
+  if (!gift) { toast('Add an item name.'); return false; }
+  let link = String(fd.get('link') || '').trim();
+  if (link && !/^https?:\/\//i.test(link)) link = 'https://' + link;
+  if (link) { try { new URL(link); } catch { toast('That link does not look right.'); return false; } }
+  let price = null;
+  const raw = String(fd.get('price') || '').replace(/[$,\s]/g, '');
+  if (raw) {
+    price = Number(raw);
+    if (!Number.isFinite(price) || price < 0 || price > 1e7) { toast('Price must be a number, like 45 or 45.99.'); return false; }
+    price = Math.round(price * 100) / 100;
+  }
+  const prev = S.items[uid]?.[id] || {};
+  const file = fd.get('photo');
+  let image = prev.image || null;
+  if (file && file.size) {
+    try { image = await shrink(file, 640, 170000); } catch { toast("Couldn't use that photo. Try a smaller one."); return false; }
+  }
+  try {
+    const data = { occasionId: String(fd.get('occasion')), name: gift, url: link || null, price, image, createdAt: prev.createdAt || Date.now() };
+    const ref = id ? db.doc(`lists/${uid}/items/${id}`) : db.collection(`lists/${uid}/items`).doc();
+    await ref.set(data);
+    return true;
+  } catch (e) { toast(errMsg(e)); return false; }
+}
+
+async function saveOcc(form) {
+  const title = String(new FormData(form).get('title') || '').trim();
+  const date = String(new FormData(form).get('date') || '').trim();
+  if (!title) { toast('Add a title.'); return false; }
+  try {
+    const ref = db.collection('occasions').doc();
+    S.sel = ref.id;
+    await ref.set({ title, date, createdAt: Date.now() });
+    return true;
+  } catch (e) { toast(errMsg(e)); return false; }
+}
+
+async function buy(id) {
+  if (S.claims[id]) { toast('Someone just bought this.'); return; }
+  try { await db.doc('claims/' + id).set({ by: S.me, at: Date.now() }); }
+  catch (e) { toast(errMsg(e)); }
+}
+async function unbuy(id) {
+  try { await db.doc('claims/' + id).delete(); }
+  catch (e) { toast(errMsg(e)); }
+}
+async function removeItem(uid, id) {
+  if (!(await confirmDlg('Delete this item?'))) return;
+  try {
+    if (S.claims[id]) await db.doc('claims/' + id).delete();
+    await db.doc(`lists/${uid}/items/${id}`).delete();
+  } catch (e) { toast(errMsg(e)); }
+}
+
+/* ---------- Views ---------- */
+function render() {
+  if (!S.loaded) return;
+  const rail = $('#rail'), main = $('#main'), hd = $('#hd');
+  hd.innerHTML = S.joined
+    ? `${S.owner ? '<button class="btn ghost sm" data-act="invite" type="button">Invite</button>' : ''}
+       <button class="av" data-act="me" aria-label="Edit your profile" style="--c:${esc(S.mem[S.me].color)}">${avatar(S.me)}</button>`
+    : '';
+  rail.hidden = !S.joined;
+  document.querySelector('.shell').classList.toggle('solo', !S.joined);
+  if (!S.joined) {
+    if (!S.joinShown) { main.innerHTML = joinView(); S.joinShown = true; }
+    return;
+  }
+  S.joinShown = false;
+  rail.innerHTML = railView();
+  main.innerHTML = mainView();
+}
+
+function profileFields(m) {
+  const color = m?.color || COLORS[0];
+  return `
+    <label class="field"><span>Name</span><input name="name" required maxlength="40" value="${esc(m?.name || '')}" autocomplete="given-name"></label>
+    <fieldset class="field"><legend>Color</legend>
+      <div class="swatches">${COLORS.map(c => `<label class="sw"><input type="radio" name="color" value="${c}" ${c === color ? 'checked' : ''}><span style="--c:${c}"></span></label>`).join('')}</div>
+    </fieldset>
+    <label class="field"><span>Photo <em>optional</em></span><input name="photo" type="file" accept="image/*"></label>
+    ${m?.photo ? '<p class="hint">Your current photo stays unless you choose a new one.</p>' : ''}`;
+}
+
+function joinView() {
+  return `<section class="join">
+    <p class="eyebrow">Welcome</p>
+    <h1>Join the family registry</h1>
+    <p class="muted">Add your name and pick a color. Then add your own lists.</p>
+    <form class="stack" data-form="profile">
+      ${profileFields(null)}
+      <div class="row end"><button class="btn">Join</button></div>
+    </form>
+  </section>`;
+}
+
+function railView() {
+  const occs = sortedOcc();
+  return `
+    <div class="rail-block">
+      <p class="eyebrow">Occasions</p>
+      <nav class="occs" aria-label="Occasions">
+        ${occs.map(([id, o]) => `<button class="occ" type="button" aria-pressed="${id === S.sel}" data-act="sel" data-id="${esc(id)}">${esc(o.title)}</button>`).join('')}
+        ${S.owner ? '<button class="occ add" type="button" data-act="new-occ">+ New</button>' : ''}
+      </nav>
+    </div>
+    <div class="rail-block">
+      <p class="eyebrow">Family</p>
+      <div class="people-row">
+        ${sortedMembers().map(([uid, m]) => `
+          <button class="person" type="button" data-act="jump" data-id="${esc(uid)}">
+            <span class="av" style="--c:${esc(m.color)}">${avatar(uid)}</span>
+            <span>${esc((m.name || '').split(' ')[0])}</span>
+          </button>`).join('')}
+      </div>
+    </div>`;
+}
+
+function mainView() {
+  const occ = S.occ[S.sel];
+  if (!occ) {
+    return `<div class="empty">
+      <h2>No occasions yet</h2>
+      <p class="muted">${S.owner ? 'Add the first one, like a birthday or the holidays.' : 'The owner will add occasions here.'}</p>
+      ${S.owner ? '<button class="btn" type="button" data-act="new-occ">New occasion</button>' : ''}
+    </div>`;
+  }
+  return `<header class="occ-head">
+      <p class="eyebrow">${occ.date ? esc(occ.date) : 'Occasion'}</p>
+      <h1>${esc(occ.title)}</h1>
+    </header>
+    ${sortedMembers().map(([uid, m]) => listView(uid, m)).join('')}`;
+}
+
+function listView(uid, m) {
+  const mine = uid === S.me;
+  const gifts = Object.entries(S.items[uid] || {})
+    .filter(([, it]) => it.occasionId === S.sel)
+    .sort((a, b) => byTime(a, b, 'createdAt'));
+  const canAdd = mine || S.owner;
+  return `<section class="list" id="p-${esc(uid)}">
+    <header class="list-head">
+      <span class="av lg" style="--c:${esc(m.color)}">${avatar(uid)}</span>
+      <div class="grow">
+        <h2>${esc(m.name || 'Someone')}${mine ? '<span class="you">You</span>' : ''}</h2>
+        <p class="muted">${gifts.length} ${gifts.length === 1 ? 'gift' : 'gifts'}</p>
+      </div>
+      ${canAdd ? `<button class="btn ghost sm" type="button" data-act="add-item" data-uid="${esc(uid)}">Add item</button>` : ''}
+    </header>
+    ${gifts.length
+      ? `<div class="grid">${gifts.map(([id, it]) => card(uid, id, it, mine)).join('')}</div>`
+      : '<p class="empty-line">Nothing here yet.</p>'}
+  </section>`;
+}
+
+function card(uid, id, it, mine) {
+  let host = '';
+  try { host = new URL(it.url).hostname.replace(/^www\./, ''); } catch {}
+  const media = it.image
+    ? `<img src="${esc(it.image)}" alt="" loading="lazy">`
+    : `<span class="noimg" aria-hidden="true">${esc(it.name.charAt(0).toUpperCase())}</span>`;
+  return `<article class="item">
+    <div class="media">${media}</div>
+    <div class="body">
+      <h3>${esc(it.name)}</h3>
+      ${typeof it.price === 'number' ? `<p class="price">${money(it.price)}</p>` : ''}
+      ${it.url ? `<a class="ext" href="${esc(it.url)}" target="_blank" rel="noopener noreferrer">${esc(host)} ↗</a>` : ''}
+      <div class="actions">${actions(uid, id, mine)}</div>
+    </div>
+  </article>`;
+}
+
+function actions(uid, id, mine) {
+  let h = '';
+  if (mine || S.owner) {
+    h += `<button class="link" type="button" data-act="edit-item" data-uid="${esc(uid)}" data-id="${esc(id)}">Edit</button>
+          <button class="link danger" type="button" data-act="del-item" data-uid="${esc(uid)}" data-id="${esc(id)}">Delete</button>`;
+  }
+  // Hidden on your own list, so the person being gifted never sees purchase status.
+  if (!mine) {
+    const c = S.claims[id];
+    if (!c) h += `<button class="btn sm" type="button" data-act="buy" data-id="${esc(id)}">I'll buy this</button>`;
+    else if (c.by === S.me) h += `<span class="pill on">You're buying this</span><button class="link" type="button" data-act="unbuy" data-id="${esc(id)}">Undo</button>`;
+    else h += '<span class="pill">Purchased</span>';
+  }
+  return h;
+}
+
+/* ---------- Dialogs ---------- */
+function openItem(uid, id) {
+  const it = id ? S.items[uid]?.[id] : null;
+  if (id && !it) return;
+  const f = $('#itemDlg form');
+  f.reset();
+  $('#itemTitle').textContent = it ? 'Edit item' : 'Add item';
+  f.elements.uid.value = uid;
+  f.elements.itemId.value = id || '';
+  const target = it?.occasionId || S.sel;
+  $('#occSel').innerHTML = sortedOcc().map(([oid, o]) =>
+    `<option value="${esc(oid)}" ${oid === target ? 'selected' : ''}>${esc(o.title)}</option>`).join('');
+  f.elements.gift.value = it?.name || '';
+  f.elements.link.value = it?.url || '';
+  f.elements.price.value = it?.price ?? '';
+  $('#photoHint').textContent = it?.image ? 'Your current photo stays unless you choose a new one.' : '';
+  $('#itemDlg').showModal();
+}
+
+function openMe() {
+  const m = S.mem[S.me] || {};
+  $('#meBody').innerHTML = `<form class="sheet" data-form="me">
+    <h2>Your profile</h2>
+    ${profileFields(m)}
+    <div class="row end">
+      <button type="button" class="btn ghost" data-close>Cancel</button>
+      <button class="btn">Save</button>
+    </div>
+  </form>`;
+  $('#meDlg').showModal();
+}
+
+function openInvite() {
+  const u = location.href, ok = /^https?:/.test(u);
+  $('#invLink').textContent = ok ? u : 'Copy the link from the Share menu.';
+  const body = encodeURIComponent('Join our family gift registry: ' + (ok ? u : ''));
+  const sms = $('#invSms'), mail = $('#invMail');
+  sms.hidden = mail.hidden = !ok;
+  sms.href = `sms:&body=${body}`;
+  mail.href = `mailto:?subject=${encodeURIComponent('Family gift registry')}&body=${body}`;
+  $('#invDlg').showModal();
+}
+
+async function copyText(t) {
+  try { await navigator.clipboard.writeText(t); toast('Copied'); }
+  catch { toast('Select the link and copy it.'); }
+}
+
+function confirmDlg(msg) {
+  const d = $('#cfDlg');
+  $('#cfMsg').textContent = msg;
+  return new Promise(res => {
+    const finish = v => { res(v); d.close(); };
+    $('#cfOk').onclick = () => finish(true);
+    $('#cfCancel').onclick = () => finish(false);
+    d.addEventListener('close', () => res(false), { once: true });
+    d.showModal();
+  });
+}
+
+/* ---------- Events ---------- */
+document.addEventListener('click', e => {
+  const c = e.target.closest('[data-close]');
+  if (c) { c.closest('dialog')?.close(); return; }
+  const b = e.target.closest('[data-act]');
+  if (!b) return;
+  const { act, id, uid } = b.dataset;
+  const run = {
+    sel: () => { S.sel = id; render(); },
+    'new-occ': () => $('#occDlg').showModal(),
+    'add-item': () => openItem(uid, null),
+    'edit-item': () => openItem(uid, id),
+    'del-item': () => removeItem(uid, id),
+    buy: () => buy(id),
+    unbuy: () => unbuy(id),
+    jump: () => document.getElementById('p-' + id)?.scrollIntoView({ behavior: 'smooth', block: 'start' }),
+    me: openMe,
+    invite: openInvite,
+    copy: () => copyText($('#invLink').textContent),
+  }[act];
+  run?.();
+});
+
+document.addEventListener('submit', async e => {
+  const form = e.target;
+  const kind = form.dataset?.form;
+  if (!kind) return;
+  e.preventDefault();
+  if (form.dataset.busy) return;
+  form.dataset.busy = '1';
+  const save = { profile: saveProfile, me: saveProfile, item: saveItem, occ: saveOcc }[kind];
+  try {
+    const ok = await save(form);
+    if (ok) form.closest('dialog')?.close();
+  } finally { delete form.dataset.busy; }
+});
+
+document.querySelectorAll('dialog').forEach(d =>
+  d.addEventListener('click', e => { if (e.target === d) d.close(); }));
+
+init();
+</script>
